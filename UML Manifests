@@ -1,0 +1,208 @@
+UML Manifests:
+
+@startuml
+!include <C4/C4_Component>
+
+skinparam linetype ortho
+
+' Define a person representing the developer outside the system.
+Person_Ext(developer, "Developer", "Uses the Vimeo API and Player SDK")
+
+' Define the Vimeo API system boundary.
+Boundary(c1, "Vimeo API") {
+  ' Define the API as a container with the technology it uses.
+  Container(api, "API ", "Provides access to Vimeo resources", "REST API")  
+
+  ' Define various components within the Vimeo API.
+  Component(videos, "Videos ", "/videos/{video_id}", "")
+  Component(live, "Live Streams ", "/live_events/{event_id}", "")
+  Component(webhooks, "Webhooks ", "/webhooks", "")  
+
+  ' Show relationships between the API and its components.
+  Rel(api, videos, "Manage videos (upload, metadata, edit, delete)", "")
+  Rel(api, live, "Manage live events", "")
+  Rel(webhooks, videos, "Trigger events on video changes", "")
+  Rel(webhooks, live, "Trigger events on live stream changes", "") 
+}
+
+' Show the relationship between the developer and the API.
+Rel_Right(developer, api, "HTTP requests")
+
+' Define the Vimeo Player SDK system boundary.
+Boundary(c2, "Vimeo Player SDK") {
+  ' Define the SDK as a container with the technology it uses.
+  Container(sdk, "Player SDK ", "Provides a JavaScript library for interacting with Vimeo players", "JavaScript") 
+
+  ' Define various components within the Vimeo Player SDK.
+  Component(player, "Player ", "new Player(options)", "")
+  Component(embed, "Embed Options ", "{id: 123, width: 640}", "")
+
+  ' Show relationships between the SDK and its components.
+  Rel(sdk, player, "Provides methods for", "")
+  Rel(sdk, embed, "Provides options for", "")
+}
+
+' Show the relationship between the developer and the SDK.
+Rel_Down(developer, sdk, "JavaScript")
+
+SHOW_LEGEND()
+
+@enduml
+__
+
+@startuml
+!include <C4/C4_Component>
+
+skinparam linetype ortho
+
+HIDE_STEREOTYPE()
+
+Person_Ext(developer, "Developer", "Uses the Vimeo API and Player SDK")
+
+Boundary(c1, "Vimeo API") {
+  Container(api, "API", "Provides access to Vimeo resources", "REST API")
+
+  Component(videos, "Videos", "/videos/{video_id}", "")
+  Component(live, "Live Streams", "/live_events/{event_id}", "")
+  Component(tags, "Tags", "/videos/{video_id}/tags/{word}", "")
+  Component(folders, "Folders", "/users/{user_id}/projects", "")
+  Component(showcases, "Showcases", "/users/{user_id}/albums/{showcase_id}", "")
+  Component(channels, "Channels", "/channels/{channel_id}", "")
+  Component(groups, "Groups", "/groups/{group_id}", "")
+  Component(users, "Users", "/users/{user_id}, /me", "")
+  Component(analytics, "Analytics", "/analytics", "")
+  Component(oembed, "oEmbed", "/oembed", "")
+  Component(webhooks, "Webhooks", "/webhooks", "")
+
+  Rel(api, videos, "Upload, get metadata, edit, delete", "")
+  Rel(api, live, "Create, manage, get data for live events", "")
+  Rel(api, tags, "Add, remove, get tags for videos", "")
+  Rel(api, folders, "Create, manage, organize videos in folders", "")
+  Rel(api, showcases, "Create, manage video showcases", "")
+  Rel(api, channels, "Manage channels and their videos", "")
+  Rel(api, groups, "Manage groups and their members", "")
+  Rel(api, users, "Get user data and preferences", "")
+
+  Rel(analytics, videos, "Get analytics data for videos", "")
+  Rel(analytics, live, "Get analytics data for live streams", "")
+  Rel(oembed, videos, "Get embed code and metadata for videos", "")
+
+  Rel(videos, webhooks, "Notify about video and live stream events", "")
+  Rel(live, webhooks, "Notify about video and live stream events", "")
+}
+
+Rel_Right(developer, api, "HTTP requests")
+
+Boundary(c2, "Vimeo Player SDK") {
+  Container(sdk, "Player SDK", "Provides a JavaScript library for interacting with Vimeo players", "JavaScript")
+
+  Component(player, "Player", "new Player(options)", "")
+  Component(embed, "Embed Options", "{id: 123, width: 640}", "")
+  Component(playback, "Playback Control", "play(), pause(), seek()", "")
+  Component(fullscreen, "Fullscreen & PiP", "requestFullscreen(), exitFullscreen()", "")
+  Component(events, "Events", "on('play', handler), on('ended', handler)", "")
+  Component(data, "Data & Info", "getVideoTitle(), getDuration()", "")
+
+  Rel(sdk, player, "Provides methods for", "")
+  Rel(sdk, embed, "Provides options for", "")
+  Rel(sdk, playback, "Provides methods for", "")
+  Rel(sdk, fullscreen, "Provides methods for", "")
+  Rel(sdk, events, "Provides access to", "")
+  Rel(sdk, data, "Provides methods for accessing", "")
+}
+
+Rel_Down(developer, sdk, "JavaScript")
+
+SHOW_LEGEND()
+
+@enduml
+
+__
+
+
+@startuml
+!include <C4/C4_Component>
+
+' Make it all tidy
+skinparam linetype ortho
+
+' Hide stereotypes
+HIDE_STEREOTYPE()
+
+' Put yourself in the picture
+Person_Ext(developer, "Developer", "Uses the Vimeo API")
+
+' Define the scope of the Vimeo API
+Boundary(c1, "Vimeo API") {
+  ' The main API container
+  Container(api, "API", "Provides access to Vimeo resources", "REST API")
+
+  ' Components within the API boundary
+  Component(videos, "Videos", "/videos/{video_id}", "Manage videos")
+  Component(live, "Live Streams", "/live_events/{event_id}", "Manage live streams")
+  Component(tags, "Tags", "/videos/{video_id}/tags/{word}", "Manage tags for videos")
+  Component(folders, "Folders", "/users/{user_id}/projects", "Manage folders")
+  Component(showcases, "Showcases", "/users/{user_id}/albums/{showcase_id}", "Manage showcases")
+  Component(channels, "Channels", "/channels/{channel_id}", "Manage channels")
+  Component(groups, "Groups", "/groups/{group_id}", "Manage groups")
+  Component(users, "Users", "/users/{user_id}, /me", "Manage users")
+  Component(analytics, "Analytics", "/analytics", "Access analytics data")
+  Component(oembed, "oEmbed", "/oembed", "Get embed code and metadata")
+  Component(webhooks, "Webhooks", "/webhooks", "Manage webhooks")
+
+  ' Define relationships between components
+  Rel(api, videos, "Upload, get metadata, edit, delete", "")
+  Rel(api, live, "Create, manage, get data for live events", "")
+  Rel(api, tags, "Add, remove, get tags for videos", "")
+  Rel(api, folders, "Create, manage, organize videos in folders", "")
+  Rel(api, showcases, "Create, manage video showcases", "")
+  Rel(api, channels, "Manage channels and their videos", "")
+  Rel(api, groups, "Manage groups and their members", "")
+  Rel(api, users, "Get user data and preferences", "")
+
+  Rel(analytics, videos, "Get analytics data for videos", "")
+  Rel(analytics, live, "Get analytics data for live streams", "")
+  Rel(oembed, videos, "Get embed code and metadata for videos", "")
+
+  Rel(videos, webhooks, "Notify about video and live stream events", "")
+  Rel(live, webhooks, "Notify about video and live stream events", "")
+}
+
+' Define the relationship between the developer and the API
+Rel_Down(developer, api, "HTTP requests")
+
+@enduml
+
+__
+
+
+@startuml
+!include <C4/C4_Component>
+
+skinparam linetype ortho
+
+HIDE_STEREOTYPE()
+
+Person_Ext(developer, "Developer", "Uses the Vimeo Player SDK")
+
+Boundary(c2, "Vimeo Player SDK") {
+  Container(sdk, "Player SDK", "Provides a JavaScript library for interacting with Vimeo players", "JavaScript")
+
+  Component(player, "Player", "new Player(options)", "")
+  Component(embed, "Embed Options", "{id: 123, width: 640}", "")
+  Component(playback, "Playback Control", "play(), pause(), seek()", "")
+  Component(fullscreen, "Fullscreen & PiP", "requestFullscreen(), exitFullscreen()", "")
+  Component(events, "Events", "on('play', handler), on('ended', handler)", "")
+  Component(data, "Data & Info", "getVideoTitle(), getDuration()", "")
+
+  Rel(sdk, player, "Provides methods for", "")
+  Rel(sdk, embed, "Provides options for", "")
+  Rel(sdk, playback, "Provides methods for", "")
+  Rel(sdk, fullscreen, "Provides methods for", "")
+  Rel(sdk, events, "Provides access to", "")
+  Rel(sdk, data, "Provides methods for accessing", "")
+}
+
+Rel_Down(developer, sdk, "JavaScript")
+
+@enduml
