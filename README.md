@@ -1,5 +1,5 @@
 # Mapping the Vimeo API
-### A developer's UML tube map for the Vimeo API and SDK.
+### A developer's UML "tube map" for the Vimeo API and SDK.
 
 
 [![DOI](https://zenodo.org/badge/954574076.svg)](https://doi.org/10.5281/zenodo.15082257)
