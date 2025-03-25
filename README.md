@@ -1,6 +1,11 @@
 # Mapping the Vimeo API
 ### A developer's UML tube map for the Vimeo API and SDK.
 
+
+[![DOI](https://zenodo.org/badge/954574076.svg)](https://doi.org/10.5281/zenodo.15082257)
+
+
+
 As developers, we often find ourselves needing to integrate third-party services into our applications. One such service that offers a rich set of features for video hosting, management, and playback is Vimeo.
 
 While the Vimeo API and Player SDK provide comprehensive documentation, it can sometimes be challenging to grasp the overall structure and relationships between different components. That's why I've created these UML diagrams to help visualise how these tools work together - bearing in mind that the nuanced nature of certain components makes this exercise a close approximation, not an exhaustive categorisation.
